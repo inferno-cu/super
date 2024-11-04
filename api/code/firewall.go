@@ -20,10 +20,14 @@ import (
 )
 
 import (
+	"github.com/google/nftables"
 	"github.com/gorilla/mux"
+	"github.com/vishvananda/netlink"
 )
 
 var FWmtx sync.Mutex
+
+var NFT *NFTablesManager
 
 type BaseRule struct {
 	RuleName string
@@ -456,8 +460,7 @@ func rebuildUplink() {
 
 	outbound := collectOutbound()
 
-	cmd := exec.Command("nft", "flush", "chain", "inet", "mangle", "OUTBOUND_UPLINK")
-	_, err := cmd.Output()
+	err := NFT.FlushChain(nftables.TableFamilyINet, "mangle", "OUTBOUND_UPLINK")
 	if err != nil {
 		log.Println("failed to flush chain mangle OUTBOUND_UPLINK", err)
 		return
@@ -487,7 +490,7 @@ func rebuildUplink() {
 		"iifname != @uplink_interfaces ip daddr != @supernetworks " +
 		"ip daddr != 224.0.0.0/4 meta mark set " + strategy + fmt.Sprintf(" mod %d offset %d", len(outbound), firstOutboundRouteTable)
 
-	cmd = exec.Command("nft", strings.Fields(rule)...)
+	cmd := exec.Command("nft", strings.Fields(rule)...)
 
 	_, err = cmd.Output()
 	if err != nil {
@@ -2201,10 +2204,9 @@ func addCustomVerdict(ZoneName string, IP string, Iface string) {
 }
 
 func hasCustomVerdict(ZoneName string, IP string, Iface string) bool {
-	err := exec.Command("nft", "get", "element", "inet", "filter", ZoneName+"_dst_access", "{", IP, ".", Iface, ":", "continue", "}").Run()
+	err, result := NFT.HasCustomVerdict(ZoneName, IP, Iface)
 	if err == nil {
-		err = exec.Command("nft", "get", "element", "inet", "filter", ZoneName+"_src_access", "{", IP, ".", Iface, ":", "accept", "}").Run()
-		return err == nil
+		return result
 	}
 	return false
 }
@@ -2344,8 +2346,11 @@ func addVerdictMac(IP string, MAC string, Iface string, Table string, Verdict st
 }
 
 func hasVerdictMac(IP string, MAC string, Iface string, Table string, Verdict string) bool {
-	err := exec.Command("nft", "get", "element", "inet", "filter", Table, "{", IP, ".", Iface, ".", MAC, ":", Verdict, "}").Run()
-	return err == nil
+	result, err := NFT.HasVerdictMac(IP, MAC, Iface, Table, Verdict)
+	if err == nil {
+		return result
+	}
+	return false
 }
 
 var blockVerdict = "goto PFWDROPLOG"
@@ -2581,46 +2586,45 @@ type RouteEntry struct {
 }
 
 func getRouteInterface(IP string) string {
-	routes := []RouteEntry{}
+	ipAddr := net.ParseIP(IP)
+	if ipAddr == nil {
+		return ""
+	}
 
-	cmd := exec.Command("ip", "-j", "route", "get", IP)
-	output, err := cmd.Output()
-
+	route, err := netlink.RouteGet(ipAddr)
 	if err != nil {
 		return ""
 	}
 
-	err = json.Unmarshal(output, &routes)
-	if err != nil {
-		log.Println(err)
+	if len(route) < 1 {
 		return ""
 	}
 
-	if len(routes) == 1 {
-		return routes[0].Dev
+	iface, err := netlink.LinkByIndex(route[0].LinkIndex)
+	if err != nil {
+		return ""
 	}
 
-	return ""
+	return iface.Attrs().Name
 }
 
 func getRouteGatewayForTable(Table string) string {
-	routes := []RouteEntry{}
-
-	cmd := exec.Command("ip", "-j", "route", "show", "table", Table)
-	output, err := cmd.Output()
-
+	tableID, err := strconv.Atoi(Table)
 	if err != nil {
 		return ""
 	}
 
-	err = json.Unmarshal(output, &routes)
+	routes, err := netlink.RouteListFiltered(netlink.FAMILY_V4, &netlink.Route{
+		Table: tableID,
+	}, netlink.RT_FILTER_TABLE)
 	if err != nil {
-		log.Println(err)
 		return ""
 	}
 
 	if len(routes) == 1 {
-		return routes[0].Gateway
+		if routes[0].Gw != nil {
+			return routes[0].Gw.String()
+		}
 	}
 
 	return ""
@@ -3099,6 +3103,12 @@ func updateFirewallSubnets(DNSIP string, TinyNets []string) {
 }
 
 func initFirewallRules() {
+	var err error
+	NFT, err = NewNFTablesManager()
+	if err != nil {
+		panic(err)
+	}
+
 	SyncBaseContainer()
 
 	loadFirewallRules()
