@@ -37,6 +37,7 @@ import AlertSettings from 'views/AlertSettings'
 import AddAlert from 'views/Alerts/AddAlert'
 import SpeedTest from 'views/SpeedTest'
 import Supernetworks from 'views/Supernetworks'
+import BandwidthUsage from 'views/System/BandwidthUsage' 
 
 import {
   ActivityIcon,
@@ -325,6 +326,15 @@ const routes = [
         name: 'Tasks',
         icon: Repeat2,
         component: PFWTasks,
+        hideSimple: true,
+        layout: 'admin',
+        plus: true
+      },
+      {
+        path: 'bandwidth_usage',
+        name: 'Bandwidth Usage',
+        icon: RouterIcon,
+        component: BandwidthUsage,
         hideSimple: true,
         layout: 'admin',
         plus: true
