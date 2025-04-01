@@ -38,6 +38,7 @@ import AddAlert from 'views/Alerts/AddAlert'
 import SpeedTest from 'views/SpeedTest'
 import Supernetworks from 'views/Supernetworks'
 import BandwidthUsage from 'views/System/BandwidthUsage' 
+import SystemInformation from 'views/SystemInformation'
 
 import {
   ActivityIcon,
@@ -49,6 +50,7 @@ import {
   BellIcon,
   CableIcon,
   CogIcon,
+  ComputerIcon,
   ContainerIcon,
   EarthLockIcon,
   EyeIcon,
@@ -346,9 +348,16 @@ const routes = [
     state: 'systemCollapse',
     views: [
       {
-        path: 'info',
-        name: 'System Info',
+        path: 'system information',
+        name: 'System Information',
         icon: ActivityIcon,
+        component: SystemInformation,
+        layout: 'admin'
+      },
+      {
+        path: 'info',
+        name: 'SPR Software Info',
+        icon: ComputerIcon,
         component: SystemInfoTabView,
         layout: 'admin'
       },
