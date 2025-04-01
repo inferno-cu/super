@@ -19,6 +19,11 @@ import {
   Interfaces,
   WifiInfo
 } from 'components/Dashboard/WifiWidgets'
+
+import {
+  MakeCall
+} from 'components/Dashboard/CallWidgets'
+
 import {
   WireguardPeers,
   WireguardPeersActive
@@ -227,6 +232,7 @@ const Home = (props) => {
                   }}
                   key={iface}
                 >
+                  <MakeCall iface={iface} flex={1} />
                   <WifiInfo iface={iface} flex={1} />
                   <WifiClients iface={iface} flex={1} />
                 </Box>
