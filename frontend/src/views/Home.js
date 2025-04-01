@@ -35,6 +35,12 @@ import {
   DNSBlockFullMetrics,
   DNSBlockPercent
 } from 'components/Dashboard/DNSMetricsWidgets'
+
+import {
+  CellularStatus,
+  SateliteStatus
+} from 'components/Dashboard/ConnectionWidgets'
+
 import { ServicesEnabled } from 'components/Dashboard/ServicesWidgets'
 import IntroWidget from 'components/Dashboard/Intro'
 
@@ -247,9 +253,11 @@ const Home = (props) => {
           />
           {show.dns ? (
             <VStack space="md">
-              {/*<DNSMetrics />
+              <CellularStatus />
+              <SateliteStatus />
+              <DNSMetrics />
               <DNSBlockMetrics />
-              <DNSBlockPercent />*/}
+              <DNSBlockPercent />
               <DNSBlockFullMetrics />
             </VStack>
           ) : null}
