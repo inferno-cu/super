@@ -1,4 +1,4 @@
-import { Platform } from 'react-native'
+import { LogBox, Platform } from 'react-native'
 
 import AddDevice from 'views/Devices/AddDevice'
 import {WifiConnect} from 'views/Devices/ConnectDevice'
@@ -42,6 +42,7 @@ import SystemInformation from 'views/SystemInformation'
 import MakeCall from 'views/Calling/MakeCall'
 import CallHistory from 'views/Calling/CallHistory'
 import InternetDataRouting from 'views/InternetDataRouting'
+import Log from 'views/System/Log'
 
 import {
   ActivityIcon,
@@ -68,6 +69,7 @@ import {
   LaptopIcon,
   LineChartIcon,
   ListTreeIcon,
+  Logs,
   NetworkIcon,
   PhoneCall,
   PuzzleIcon,
@@ -392,6 +394,13 @@ const routes = [
         icon: ComputerIcon,
         component: SystemInfoTabView,
         layout: 'admin'
+      },
+      {
+      path: 'Log',
+      name: 'Log',
+      icon: Logs,
+      component: Log,
+      layout: 'admin'
       },
       {
         path: 'plugins',
