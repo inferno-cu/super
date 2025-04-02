@@ -39,6 +39,8 @@ import SpeedTest from 'views/SpeedTest'
 import Supernetworks from 'views/Supernetworks'
 import BandwidthUsage from 'views/System/BandwidthUsage' 
 import SystemInformation from 'views/SystemInformation'
+import MakeCall from 'views/Calling/MakeCall'
+import CallHistory from 'views/Calling/CallHistory'
 
 import {
   ActivityIcon,
@@ -59,12 +61,14 @@ import {
   GaugeIcon,
   GlobeIcon,
   HammerIcon,
+  HistoryIcon,
   HomeIcon,
   KeyIcon,
   LaptopIcon,
   LineChartIcon,
   ListTreeIcon,
   NetworkIcon,
+  PhoneCall,
   PuzzleIcon,
   Repeat2,
   RouterIcon,
@@ -118,6 +122,26 @@ const routes = [
     path: 'connect_device',
     redirect: true,
     component: WifiConnect
+  },
+  {
+    name: 'Calling',
+    state: 'netCollapse',
+    views: [
+      {
+        path: 'make call',
+        name: 'Make Call',
+        icon: PhoneCall,
+        component: MakeCall,
+        layout: 'admin'
+      },
+      {
+        path: 'call history',
+        name: 'Call History',
+        icon: HistoryIcon,
+        component: CallHistory,
+        layout: 'admin'
+      },
+    ]
   },
   {
     name: 'Network',
