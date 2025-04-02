@@ -41,6 +41,7 @@ import BandwidthUsage from 'views/System/BandwidthUsage'
 import SystemInformation from 'views/SystemInformation'
 import MakeCall from 'views/Calling/MakeCall'
 import CallHistory from 'views/Calling/CallHistory'
+import InternetDataRouting from 'views/InternetDataRouting'
 
 import {
   ActivityIcon,
@@ -147,6 +148,13 @@ const routes = [
     name: 'Network',
     state: 'netCollapse',
     views: [
+      {
+        path: 'internet data routing',
+        name: 'Internet Data Routing',
+        icon: ShuffleIcon,
+        component: InternetDataRouting,
+        layout: 'admin'
+      },
       {
         path: 'wireless',
         name: 'Wifi',
