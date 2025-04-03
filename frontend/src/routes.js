@@ -43,6 +43,7 @@ import MakeCall from 'views/Calling/MakeCall'
 import CallHistory from 'views/Calling/CallHistory'
 import InternetDataRouting from 'views/InternetDataRouting'
 import Log from 'views/System/Log'
+import DiagnosticsDashboard from 'views/System/DiagnosticsDashboard'
 
 import {
   ActivityIcon,
@@ -421,6 +422,14 @@ const routes = [
         name: 'Auth',
         icon: KeyIcon,
         component: AuthSettings,
+        hideSimple: true,
+        layout: 'admin'
+      },
+      {
+        path: 'diagnosticsdashboard/',
+        name: 'Diagnostics',
+        icon: KeyIcon,
+        component: DiagnosticsDashboard,
         hideSimple: true,
         layout: 'admin'
       }
