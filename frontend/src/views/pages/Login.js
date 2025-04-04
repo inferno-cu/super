@@ -133,13 +133,18 @@ const Login = (props) => {
         '@md': {
           h: 'auto',
           w: '$1/4',
-          mt: '8vh',
+          mt: '20vh',
           alignSelf: 'center',
-          rounded: 10
+          rounded: 50
         }
       }}
-      bg={colorMode === 'light' ? 'white' : '$blueGray900'}
+
+      bg={colorMode === 'light' ? 'white' : '#1c1917'}
+      
     >
+
+      <img src='/inferno-logo.png' style={{ width: '200px', height: 'auto', margin:'0 auto' }} />
+
       <VStack space="lg" flex={2}>
         <Heading
           alignSelf="center"
@@ -223,8 +228,8 @@ const Login = (props) => {
         </FormControl>
         <Button
           rounded="full"
-          colorScheme="yellow"
-          bg="#fbc658"
+          colorScheme="orange"
+          bg="#f97316"
           sx={{
             ':hover': {
               bg: '#fab526'
