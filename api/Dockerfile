@@ -1,12 +1,12 @@
-FROM ubuntu:24.04 AS builder
+FROM arm32v7/ubuntu:22.04 AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends nftables iproute2 netcat-traditional inetutils-ping net-tools nano ca-certificates git curl wget
 RUN mkdir /code
 WORKDIR /code
-ARG TARGETARCH
-RUN wget https://dl.google.com/go/go1.23.3.linux-${TARGETARCH}.tar.gz
-RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.23.3.linux-${TARGETARCH}.tar.gz
+# Use armv7l instead of ${TARGETARCH}
+RUN wget https://dl.google.com/go/go1.24.2.linux-armv6l.tar.gz
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.24.2.linux-armv6l.tar.gz
 ENV PATH="/usr/local/go/bin:$PATH"
 COPY code/ /code/
 
@@ -22,7 +22,8 @@ RUN --mount=type=tmpfs,target=/tmpfs \
     [ "$USE_TMPFS" = "true" ] && ln -s /tmpfs /root/go; \
     go build -ldflags "-s -w" -o /sprbus
 
-FROM ghcr.io/spr-networks/container_template:latest
+# Replace container_template with arm32v7/ubuntu
+FROM arm32v7/ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends openssh-client git hostapd iw jc systemd macchanger && rm -rf /var/lib/apt/lists/*
 COPY scripts /scripts/
