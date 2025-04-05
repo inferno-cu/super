@@ -19,13 +19,23 @@ function Footer(props) {
     }
   }
 
+  const regText = {
+    
+    fontWeight: '700',
+    size: 'sm',
+    color: '#f97316',
+    letterSpacing: 0.5,
+    textDecorationLine: 'none' 
+
+  }
+
   const pillBox = {
     px: '$3',
     py: '$1',
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: '#fde047', // 🔶 Bright golden yellow border
-    backgroundColor: '#1a1300', // 🔥 Dark charcoal brown to contrast the gold
+    borderColor: '#f97316', // 🔶 Bright golden yellow border
+    backgroundColor: '#1c1917', // 🔥 Dark charcoal brown to contrast the gold
     shadowColor: '#fde047',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.4,
@@ -46,7 +56,7 @@ function Footer(props) {
           end: [1, 1]
         }
       }}
-      borderTopWidth={1}
+      borderTopWidth={0}
       borderTopColor="#ffcc00"
       alignItems="center"
       justifyContent="center"
@@ -55,22 +65,23 @@ function Footer(props) {
       <HStack space="lg" flexWrap="wrap" justifyContent="center">
         <Link isExternal href="http://infernet.work">
           <Box sx={pillBox}>
-            <LinkText sx={glowText}>Infernet</LinkText>
+            <LinkText sx={regText}>Infernet</LinkText>
           </Box>
         </Link>
         <Link isExternal href="https://docs.infernet.work">
           <Box sx={pillBox}>
-            <LinkText sx={glowText}>Docs</LinkText>
+            <LinkText sx={regText}>Docs</LinkText>
           </Box>
         </Link>
         <Link isExternal href="https://arch.infernet.work">
           <Box sx={pillBox}>
-            <LinkText sx={glowText}>Architecture</LinkText>
+            <LinkText sx={regText}>Architecture</LinkText>
           </Box>
         </Link>
         <Link isExternal href="https://github.com/inferno-cu">
-          <Box sx={pillBox}>
-            <LinkText sx={glowText}>GitHub</LinkText>
+          <Box sx={{pillBox, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <img src='GitHub_Invertocat_Light.png' alt="github logo" style={{ width: 16, height: 16 }} />
+            <LinkText sx={regText}>GitHub</LinkText>
           </Box>
         </Link>
       </HStack>

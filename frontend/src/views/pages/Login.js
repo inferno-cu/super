@@ -133,9 +133,9 @@ const Login = (props) => {
         '@md': {
           h: 'auto',
           w: '$1/4',
-          mt: '20vh',
+          mt: '15vh',
           alignSelf: 'center',
-          rounded: 50
+          rounded: 40
         }
       }}
 
@@ -143,7 +143,7 @@ const Login = (props) => {
       
     >
 
-      <img src='/inferno-logo.png' style={{ width: '200px', height: 'auto', margin:'0 auto' }} />
+      <img src='/inferno-logo-word.png' style={{ width: '200px', height: 'auto', margin:'0 auto' }} />
 
       <VStack space="lg" flex={2}>
         <Heading
@@ -157,7 +157,6 @@ const Login = (props) => {
             }
           }}
         >
-          Login
         </Heading>
         <FormControl
           isInvalid={'hostname' in errors}
@@ -227,7 +226,7 @@ const Login = (props) => {
           ) : null}
         </FormControl>
         <Button
-          rounded="full"
+          rounded="$full"
           colorScheme="orange"
           bg="#f97316"
           sx={{
